@@ -107,11 +107,12 @@ class Sample {
   }
   
   public float getChiSquared(ArrayList<Chip> chips) {
-	  float observed, expected, sum = 0, sumProportions = 0;
+	  float observed, expected;
+	  float sum = 0, sumProportions = 0;
 	  for (Chip c : chips)
 		  sumProportions += c.proportion;
 	  for (Chip c : chips) {
-		  expected = c.proportion / sumProportions;
+		  expected = c.proportion / sumProportions * countAll();
 		  observed = countType(c);
 		  sum += (observed - expected) * (observed - expected) / expected;
 	  }
@@ -158,8 +159,8 @@ public void drawSampleSize() {
 
 public void drawChiSquaredDistribution() {
 	
-	final int SAMPLES = 2000;
-	final int ORIGIN = 240000;
+	final int SAMPLES = 5000;
+	final int SCALE = 10;
 		
 	float[] results = new float[SAMPLES];
 	p = new Population(chips);
@@ -169,11 +170,11 @@ public void drawChiSquaredDistribution() {
 	for (float i = 0; i < 500; i += 1) {
 		int inBar = 0;
 		for (float result : results) {
-			if (i * 50 + ORIGIN <= result && result < (i + 0.5) * 50 + ORIGIN)
+			if (i / SCALE <= result && result < (i + 0.5) / SCALE)
 				inBar++;
 		}
 			
-		rect(75 + i, 400 - inBar, 0f, inBar);
+		rect(75 + i, 450 - inBar, 0, inBar);
 	}
 	
 }
